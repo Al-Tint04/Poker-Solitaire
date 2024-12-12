@@ -19,7 +19,8 @@ class Table(object):
 
         self._total_scores = {
             "American": 0,
-            "English": 0}
+            "English": 0
+        }
         self.set_total_scores()
 
     @property
@@ -40,6 +41,7 @@ class Table(object):
                f"English: {self.total_scores.get('English')}"
 
     def __str__(self):
+        self.score()
         _table_s = "\n\t\t "
         for _c in range(self._columns):
             _table_s += f"{chr(65 + _c): ^5}  "
@@ -78,14 +80,17 @@ class Table(object):
     def row(self, row: int) -> list:
         return self._table[row]
 
-    def rank(self, hand: list[Card]):
-        try:
-            isinstance(hand, list)
-        except TypeError:
+    def rank(self, hand: list[Card]) -> list[int] | None:
+
+        if len(hand) != 5 or not isinstance(hand, list):
             return None
 
-        if len(hand) != 5:
-            return None
+        try:
+            for _i in range(len(hand)):
+                if not isinstance(hand[_i], Card):
+                    raise TypeError
+        except TypeError:
+            return [0, 0]
 
         _hand = hand
         _hand = sorted(_hand, key=lambda card: card.ptvalue)
@@ -149,17 +154,18 @@ class Table(object):
             return False
 
     def score(self):
+
         for _r in range(self._rows):
+
             self._row_scores["American"][f"Row {_r + 1}"] = self.rank(self.row(_r))[0]
             self._row_scores["English"][f"Row {_r + 1}"] = self.rank(self.row(_r))[1]
-
 
         for _c in range(self._columns):
             self._col_scores["American"][f"Column {_c + 1}"] = self.rank(self.column(_c))[0]
             self._col_scores["English"][f"Column {_c + 1}"] = self.rank(self.column(_c))[1]
 
-        self.set_total_scores()
 
+        self.set_total_scores()
 
     def set_total_scores(self):
         self._total_scores = {
@@ -180,12 +186,10 @@ class Table(object):
             else:
                 _coordinates[0] = _mapping[_coordinates[0]]
                 _coordinates[1] = int(_coordinates[1]) - 1
-                if isinstance(self._table[_coordinates[1]][_coordinates[0]],Card):
-                   print("You already have a card there, pick somewhere else.")
+                if isinstance(self._table[_coordinates[1]][_coordinates[0]], Card):
+                    print("You already have a card there, pick somewhere else.")
                 else:
                     return _coordinates
-
-
 
     def is_full(self) -> bool:
         for _row in range(self._rows):
