@@ -1,6 +1,5 @@
-from card import Card
+from playing_cards.card import Card
 from collections import Counter
-import re
 
 
 class Table(object):
@@ -38,21 +37,21 @@ class Table(object):
     @property
     def total_scores_str(self) -> str:
         return f"American: {self.total_scores.get('American')}, " \
-               f"English: {self.total_scores.get('english')}"
+               f"English: {self.total_scores.get('English')}"
 
     def __str__(self):
         _table_s = "\n\t\t "
         for _c in range(self._columns):
-            _table_s += f"{chr(65 + _c):^5}  "
+            _table_s += f"{chr(65 + _c): ^5}  "
         _table_s += "\n\t\t " + (u'\u2500' * 35) + "\n"
         for _row in range(self._columns):
             _table_s += f"\t{_row + 1}\t"
             for _col in range(self._rows):
                 if isinstance(self._table[_row][_col], Card):
                     if self._table[_row][_col].face == "10":
-                        _table_s += f"{self._table[_row][_col].shorthand():^7}"
+                        _table_s += f"{self._table[_row][_col].shorthand(): ^8}"
                     else:
-                        _table_s += f"{self._table[_row][_col].shorthand():^6}"
+                        _table_s += f"{self._table[_row][_col].shorthand(): ^7}"
                 else:
                     _table_s += " {} ".format(self._table[_row][_col])
             _table_s += "| A:{}, E:{}\n".format(self._row_scores["American"][f"Row {_row + 1}"],
@@ -71,7 +70,7 @@ class Table(object):
         return _table_s
 
     def play_card(self, card: Card, column: int, row: int):
-        self._table[column - 1][row - 1] = card
+        self._table[row - 1][column - 1] = card
 
     def get_slot(self, column: int, row: int):
         return self._table[column][row]
@@ -170,7 +169,8 @@ class Table(object):
             "American": sum(self._row_scores["American"].values()) + sum(self._col_scores["American"].values()),
             "English": sum(self._row_scores["English"].values()) + sum(self._col_scores["English"].values())}
 
-    def select_location(self) -> list:
+    @staticmethod
+    def select_location() -> list:
         _mapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5}
 
         while True:

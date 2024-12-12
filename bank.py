@@ -1,5 +1,5 @@
-from deck import Deck
-from card import Card
+from playing_cards.deck import Deck
+from playing_cards.card import Card
 import re
 
 

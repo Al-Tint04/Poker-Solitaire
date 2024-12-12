@@ -1,14 +1,14 @@
 import sys
-from bank import Bank
-from card import Card
-from deck import Deck
-from table import Table
+from playing_cards.bank import Bank
+from playing_cards.card import Card
+from playing_cards.deck import Deck
+from playing_cards.table import Table
 
 
 def test() -> int:
-    print(str(Table().total_scores_str))
-
+    # Environment for testing snippets of code 
     return 1
+
 
 def main() -> int:
     dealt = 0
@@ -24,7 +24,8 @@ def main() -> int:
     # Instructions
     print("\nWelcome to Poker Square / Poker Solitaire!\n")
     print("Your objective is to make the best poker hands on a 5 x 5 grid both horizontally and vertically.")
-    print("There are two points systems for hands, The American and the English. Please google a refrence page to play along with.\n")
+    print("There are two points systems for hands, The American and the English. "
+          "Please google a reference page to play along with.\n")
     print("You may choose to draw one card at a time, or multiple cards at once.")
     print("You may also choose whether you refill your card bank every turn or wait until it is empty.\n")
     print("'Cause I'm a nice programmer, and I care for your well being and enjoyment over my own sanity.\n")
@@ -52,19 +53,19 @@ def main() -> int:
 
         selected_position = table.select_location()
         table.play_card(selected_card, *selected_position)
-        if auto_refill == True or bank.check_empty() == True:
+        if auto_refill is True or bank.check_empty() is True:
             bank.fill(deck)
 
     print(table)
     table.score()
     print(f"Total scores: {table.total_scores_str}")
-    if table.total_scores.get("english") >= 70 and table.total_scores.get("American") >= 200 :
+    if table.total_scores.get("English") >= 70 and table.total_scores.get("American") >= 200:
         print("WOW! You won by all standards (A \u2265 200 & B \u2265 70), Congratulations, and nice work!")
 
     elif table.total_scores.get("American") >= 200:
         print("You Won by American standards (A \u2265 200), Congratulations!")
 
-    elif table.total_scores.get("english") >= 70:
+    elif table.total_scores.get("English") >= 70:
         print("You Won by english standards (B \u2265 70, Congratulations!")
     else:
         print("Bummer, you lost, better luck next time.")
@@ -72,6 +73,7 @@ def main() -> int:
 
     return 1
 
+
 if __name__ == '__main__':
     sys.exit(main())
-    #sys.exit(test())
+    # sys.exit(test())

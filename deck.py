@@ -1,4 +1,4 @@
-from card import Card
+from playing_cards.card import Card
 import random
 
 
