@@ -67,7 +67,7 @@ class Table(object):
         return _table_s
 
     def play_card(self, card: Card, column: int, row: int):
-        self._table[row - 1][column - 1] = card
+        self._table[row][column] = card
 
     def get_slot(self, column: int, row: int):
         return self._table[column][row]
@@ -166,9 +166,8 @@ class Table(object):
             "American": sum(self._row_scores["American"].values()) + sum(self._col_scores["American"].values()),
             "English": sum(self._row_scores["English"].values()) + sum(self._col_scores["English"].values())}
 
-    @staticmethod
-    def select_location() -> list:
-        _mapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5}
+    def select_location(self) -> list:
+        _mapping = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}
 
         while True:
             _coordinates = list(input("Enter Battleship Coordinate for your next play [A1 - E5]:\n").strip().upper())
@@ -180,8 +179,11 @@ class Table(object):
                 continue
             else:
                 _coordinates[0] = _mapping[_coordinates[0]]
-                _coordinates[1] = int(_coordinates[1])
-                return _coordinates
+                _coordinates[1] = int(_coordinates[1]) - 1
+                if isinstance(self._table[_coordinates[1]][_coordinates[0]],Card):
+                   print("You already have a card there, pick somewhere else.")
+                else:
+                    return _coordinates
 
 
 
