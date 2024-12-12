@@ -48,10 +48,7 @@ class Table(object):
             _table_s += f"\t{_row + 1}\t"
             for _col in range(self._rows):
                 if isinstance(self._table[_row][_col], Card):
-                    if self._table[_row][_col].face == "10":
-                        _table_s += f"{self._table[_row][_col].shorthand(): ^8}"
-                    else:
-                        _table_s += f"{self._table[_row][_col].shorthand(): ^7}"
+                    _table_s += f"{self._table[_row][_col].shorthand(): ^7}"
                 else:
                     _table_s += " {} ".format(self._table[_row][_col])
             _table_s += "| A:{}, E:{}\n".format(self._row_scores["American"][f"Row {_row + 1}"],
